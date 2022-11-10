@@ -23,7 +23,7 @@ def send_heart_beats_or_pid(conn,address):
         out = "Healthy State"
         conn.send(out.encode())
 
-def backup_server():
+def backup_server(start_timestamp):
     host = socket.gethostname()
     port = 5018
 
@@ -31,10 +31,15 @@ def backup_server():
     server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     server_socket.bind((host, port))
     server_socket.listen()
-    
+    Restart = True
     loop_inc = 1
     while loop_inc < 100:
         print("waiting for client")
+        if Restart:
+            end_timestamp = time.time()
+            failure_recovery = end_timestamp - start_timestamp
+            print(f'*********************FAILURE RECOVERY : {round((failure_recovery * 1000), 3) }ms*******************')
+            Restart = False
         conn, address = server_socket.accept()
         print("connection has been established")
         t1 =Thread(target = send_heart_beats_or_pid, args = (conn,address))
@@ -65,8 +70,8 @@ def client_program():
             time.sleep(1)
         except:
             print("Detected Primary Server failure")
-            time.sleep(3)
-            backup_server()
+            timestamp1 = time.time()
+            backup_server(timestamp1)
 
 
 if __name__ == '__main__':

@@ -14,8 +14,8 @@ def client_program():
             if Restart == True:
                 t2 = time.time()
                 failure_recovery = t2 - t1
-                print(f'*********************FAILURE RECOVERY : {failure_recovery}*******************')
-                print(f'*********************IDEAL FAILURE RECOVERY : {failure_recovery - 3}*******************')
+                # print(f'*********************FAILURE RECOVERY : {failure_recovery}*******************')
+                # print(f'*********************IDEAL FAILURE RECOVERY : {failure_recovery - 3}*******************')
                 Restart = False
 
             message = "Get Count" # take input
