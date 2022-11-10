@@ -22,7 +22,7 @@ def getPID():
     local_curr_pid = int(curr_PID)
     return curr_PID
 
-def send_heart_beats(conn, address):
+def send_heart_beats_or_pid(conn, address):
     data = conn.recv(1024).decode()
     if (data == "Get Count"):
         curr_PID = getPID()
@@ -65,7 +65,7 @@ def server_program(testcase):
                 print("Server CRASH")
                 break
         
-        t1 =Thread(target = send_heart_beats, args = (conn, address))
+        t1 =Thread(target = send_heart_beats_or_pid, args = (conn, address))
         t1.start()
         t1.join()
         

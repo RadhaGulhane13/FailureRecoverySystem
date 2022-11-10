@@ -13,7 +13,7 @@ def get_pid():
     f.close()
     return curr_pid
 
-def send_heart_beats(conn,address):
+def send_heart_beats_or_pid(conn,address):
     data = conn.recv(1024).decode()
     if (data == "Get Count"):
         curr_pid = get_pid()
@@ -37,7 +37,7 @@ def backup_server():
         print("waiting for client")
         conn, address = server_socket.accept()
         print("connection has been established")
-        t1 =Thread(target = send_heart_beats, args = (conn,address))
+        t1 =Thread(target = send_heart_beats_or_pid, args = (conn,address))
         t1.start()
         t1.join()
         
